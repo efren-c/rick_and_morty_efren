@@ -1,20 +1,41 @@
 import './App.css';
-import Cards from './components/Cards.jsx';
 import Nav from './components/Nav';
+import Form from './components/Form';
 import About from './components/About';
 import Detail from './components/Detail';
+import Cards from './components/Cards.jsx';
 import SearchBar from './components/SearchBar.jsx';
-import { useState } from 'react';
 import axios from 'axios';
-import { Routes, Route } from 'react-router-dom'
+import { useState, useEffect } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 
 const URL_BASE = "https://rym2-production.up.railway.app/api/characters/$%7Bid%7D"
 const API_KEY = ""
 
 function App() {
+   const location = useLocation()
    const [characters, setCharacters] = useState([])
+   const [access, setAccess] = useState(false)
+   const navigate = useNavigate()
+   const EMAIL = "efren@soyhenry.com"
+   const PASSWORD = "efren42Hen"
+
+   const login = (userData) => {
+      if (userData.email === EMAIL && userData.password === PASSWORD) {
+         setAccess(true);
+         navigate('/home');
+      }
+   }
+
+   useEffect(() => {
+      !access && navigate('/');
+   }, [access]);
 
    const onSearch = (id) => {
+      if (characters.find((char) => char.id === id)) {
+         return alert("Personaje repetido")
+      }
+
       axios(`https://rickandmortyapi.com/api/character/${id}`)  //axios(`${URL_BASE}/{id}?key=${API_KEY}`)
          .then(response => response.data)
          .then((data) => {
@@ -33,14 +54,17 @@ function App() {
 
    return (
       <div className='App'>
-         <Nav onSearch={onSearch}>
-            <SearchBar />
-         </Nav>
+         {
+            location.pathname !== '/' && <Nav onSearch={onSearch}>
+               <SearchBar />
+            </Nav>
+         }
 
          <Routes>
+            <Route path='/' element={<Form login={login} />} />
             <Route path='/home' element={<Cards characters={characters} onClose={onClose} />} />
             <Route path='/about' element={<About />} />
-            <Route path='/details:id' element={<Detail />} />
+            <Route path='/detail:id' element={<Detail />} />
          </Routes>
       </div>
    );
