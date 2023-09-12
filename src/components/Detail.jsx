@@ -1,3 +1,4 @@
+import React from "react"
 import axios from "axios"
 import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
@@ -12,7 +13,7 @@ const Detail = () => {
     useEffect(() => {
         axios(`https://rickandmortyapi.com/api/character/${id}`)
             .then(response => response.data)
-            .then(({data}) => {
+            .then(({ data }) => {
                 if (data.name) {
                     setCharacter(data);
                 } else {
@@ -24,13 +25,13 @@ const Detail = () => {
 
     return (
         <div>
-                <h2>{character?.name}</h2>
-                <h2>{character?.status}</h2>
-                <h2>{character?.species}</h2>
-                <h2>{character?.gender}</h2>
-                <h2>{character?.origin?.name}</h2>
-                <img src={character?.img} alt={character?.name} />
-                {/* character ? <h2>{character.name}</h2> : null
+            <h2>{character?.name}</h2>
+            <h2>{character?.status}</h2>
+            <h2>{character?.species}</h2>
+            <h2>{character?.gender}</h2>
+            <h2>{character?.origin?.name}</h2>
+            <img src={character?.img} alt={character?.name} />
+            {/* character ? <h2>{character.name}</h2> : null
                 character && <div>
                     <h2>character.name</h2>
                     <h2>character.status</h2>
