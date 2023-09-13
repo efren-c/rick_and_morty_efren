@@ -1,7 +1,8 @@
-import { ADD_FAV, REMOVE_FAV } from "./action-types";
+import { ADD_FAV, REMOVE_FAV, FILTER, ORDER } from "./action-types";
 
 const initialState = {
-    myFavorites: {},
+    myFavorites: [],
+    allCharsFav: []
 }
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -9,7 +10,8 @@ const reducer = (state = initialState, { type, payload }) => {
         case ADD_FAV:
             return {
                 ...state,
-                myFavorites: [...state.myFavorites, payload] //no se necesita spread de payload porque es un obj
+                myFavorites: [...state.allCharsFav, payload], //no se necesita spread de payload porque es un obj
+                allCharsFav: [...state.allCharsFav, payload]
             }
 
         case REMOVE_FAV:
@@ -18,6 +20,25 @@ const reducer = (state = initialState, { type, payload }) => {
                 myFavorites: state.myFavorites.filter(fav => fav.id !== payload)
             }
 
+        case FILTER:
+            const allCharactersFiltered = state.allCharsFav.filter(character => character.gender === payload)
+            return {
+                ...state,
+                myFavorites:
+                    payload === "allCharacters"
+                        ? [...state.allCharsFav]
+                        : allCharactersFiltered
+            }
+
+        case ORDER:
+            const allCharsFavCopy = [...state.allCharsFav]
+            return {
+                ...state,
+                myFavorites:
+                    payload === "A"
+                        ? allCharsFavCopy.sort((a, b) => a.id - b.id)
+                        : allCharsFavCopy.some((a, b) => b.id - a.id)
+            }
 
         default:
             return { ...state }
