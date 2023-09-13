@@ -12,7 +12,7 @@ const Detail = () => {
 
     useEffect(() => {
         axios(`https://rickandmortyapi.com/api/character/${id}`)
-            .then(response => response.data)
+            //.then(response => response.data)
             .then(({ data }) => {
                 if (data.name) {
                     setCharacter(data);
@@ -25,12 +25,12 @@ const Detail = () => {
 
     return (
         <div>
-            <h2>{character?.name}</h2>
-            <h2>{character?.status}</h2>
-            <h2>{character?.species}</h2>
-            <h2>{character?.gender}</h2>
-            <h2>{character?.origin?.name}</h2>
-            <img src={character?.img} alt={character?.name} />
+            <h2>Name: {character?.name}</h2>
+            <h2>Status: {character?.status}</h2>
+            <h2>Species: {character?.species}</h2>
+            <h2>Gender: {character?.gender}</h2>
+            <h2>Name: {character?.origin?.name}</h2>
+            <img src={character?.image} alt={character?.name} />
             {/* character ? <h2>{character.name}</h2> : null
                 character && <div>
                     <h2>character.name</h2>

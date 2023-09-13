@@ -37,7 +37,7 @@ const reducer = (state = initialState, { type, payload }) => {
                 myFavorites:
                     payload === "A"
                         ? allCharsFavCopy.sort((a, b) => a.id - b.id)
-                        : allCharsFavCopy.some((a, b) => b.id - a.id)
+                        : allCharsFavCopy.sort((a, b) => b.id - a.id)
             }
 
         default:

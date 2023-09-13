@@ -33,23 +33,6 @@ function App() {
       !access && navigate('/');
    }, [access]);
 
-   const onSearchRandom = () => {
-      const randomId = Math.floor(Math.random() * 826);
-      axios(`http://localhost:3001/rickandmorty/character/${randomId}`)
-         .then(response => response.data)
-         .then((data) => {
-            if (data.id) {
-               setCharacters(oldChars => [...oldChars, data]);
-            } else {
-               navigate('/:error');
-            }
-         })
-         .catch(error => {
-            console.log(error);
-            navigate('/:error');
-         });
-   };
-
    const onSearch = (id) => {
       if (characters.find((char) => char.id === id)) {
          return alert("Personaje repetido")
@@ -83,7 +66,7 @@ function App() {
             <Route path='/' element={<Form login={login} />} />
             <Route path='/home' element={<Cards characters={characters} onClose={onClose} />} />
             <Route path='/about' element={<About />} />
-            <Route path='/detail:id' element={<Detail />} />
+            <Route path='/detail/:id' element={<Detail />} />
             <Route path='/error' element={<Error />} />
             <Route path='/favorites' element={<Favorites />} />
          </Routes>
