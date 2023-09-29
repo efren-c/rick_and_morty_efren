@@ -7,18 +7,32 @@ const initialState = {
 
 const reducer = (state = initialState, { type, payload }) => {
     switch (type) {
+        /*   case ADD_FAV:
+              return {
+                  ...state,
+                  myFavorites: [...state.allCharsFav, payload], //no se necesita spread de payload porque es un obj
+                  allCharsFav: [...state.allCharsFav, payload]
+              } */
+
         case ADD_FAV:
             return {
                 ...state,
-                myFavorites: [...state.allCharsFav, payload], //no se necesita spread de payload porque es un obj
-                allCharsFav: [...state.allCharsFav, payload]
-            }
+                myFavorites: payload,
+                allCharsFav: payload
+            };
+
+        /*      case REMOVE_FAV:
+                 return {
+                     ...state,
+                     myFavorites: state.myFavorites.filter(fav => fav.id !== payload)
+                 } */
 
         case REMOVE_FAV:
             return {
                 ...state,
-                myFavorites: state.myFavorites.filter(fav => fav.id !== payload)
-            }
+                myFavorites: payload,
+                allCharsFav: payload
+            };
 
         case FILTER:
             const allCharactersFiltered = state.allCharsFav.filter(character => character.gender === payload)

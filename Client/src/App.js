@@ -1,31 +1,32 @@
 import './App.css';
-import Nav from './components/Nav';
-import Form from './components/Form';
-import About from './components/About';
-import Favorites from './components/Favorites'
-import Error from './components/Error'
-import Detail from './components/Detail';
-import Cards from './components/Cards.jsx';
-import SearchBar from './components/SearchBar.jsx';
+import Nav from './components/Nav/Nav';
+import Form from './components/Form/Form';
+import About from './components/About/About';
+import Favorites from './components/Favorites/Favorites'
+import Error from './components/Error/Error'
+import Detail from './components/Detail/Detail';
+import Cards from './components/Cards/Cards';
+import SearchBar from './components/SearchBar/SearchBar';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
-
-const URL_BASE = "https://rym2-production.up.railway.app/api/characters/$%7Bid%7D"
-const API_KEY = ""
 
 function App() {
    const location = useLocation()
    const [characters, setCharacters] = useState([])
    const [access, setAccess] = useState(false)
    const navigate = useNavigate()
-   const EMAIL = "efren@soyhenry.com"
-   const PASSWORD = "efren42Hen"
+   const URL = 'http://localhost:3001/rickandmorty/login/'
 
-   const login = (userData) => {
-      if (userData.email === EMAIL && userData.password === PASSWORD) {
-         setAccess(true);
-         navigate('/home');
+   const login = async (userData) => {
+      try {
+         const { email, password } = await userData;
+         const { data } = await axios(URL + `?email=${email}&password=${password}`)
+         const { access } = data
+         setAccess(access)
+         access && navigate('/home')
+      } catch (error) {
+         console.log(error.message)
       }
    }
 
@@ -33,24 +34,23 @@ function App() {
       !access && navigate('/');
    }, [access]);
 
-   const onSearch = (id) => {
-      if (characters.find((char) => char.id === id)) {
-         return alert("Personaje repetido")
-      }
+   const onSearch = async (id) => {
+      try {
+         const { data } = await axios(`http://localhost:3001/rickandmorty/character/${id}`)
+         if (characters.find((char) => char.id === +id)) {
+            return alert("Personaje repetido")
+         }
 
-      axios(`http://localhost:3001/rickandmorty/character/${id}`)  //axios(`${URL_BASE}/{id}?key=${API_KEY}`)
-         .then(response => response.data)
-         .then((data) => {
-            if (data.name) { //data.id
-               setCharacters((oldChars) => [...oldChars, data]);
-            } else {
-               window.alert('¡No hay personajes con este ID!');
-            }
-         });
+         if (data.name) { //data.id
+            setCharacters((oldChars) => [...oldChars, data]);
+         }
+      } catch (error) {
+         alert('¡No hay personajes con este ID!');
+      }
    }
 
    const onClose = (id) => {
-      const characterFiltered = characters.filter(character => character.id !== Number(id))
+      const characterFiltered = characters.filter(character => character.id !== +id)
       setCharacters(characterFiltered)
    }
 

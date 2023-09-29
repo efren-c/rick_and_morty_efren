@@ -3,9 +3,6 @@ import axios from "axios"
 import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 
-/* const URL_BASE = "https://rym2-production.up.railway.app/api/characters/$%7Bid%7D"
-const API_KEY = "" */
-
 const Detail = () => {
     const { id } = useParams()
     const [character, setCharacter] = useState({}) //1er par del arr state, 2do es fn que permite mod el estado. {} dentro de () asigna directamente al estado por default. Por lo tanto estado inicial char es un obj vacío. Es un {} porque la respuesta del API es un obj. El tipo de dato con el que se inicializa el estado se debe mantener en su uso.
