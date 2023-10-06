@@ -1,4 +1,4 @@
-let myFavorites = []
+/* let myFavorites = []
 
 const postFav = (req, res) => {
     try {
@@ -26,4 +26,4 @@ const deleteFav = (req, res) => {
 module.exports = {
     postFav,
     deleteFav
-}
+} */
